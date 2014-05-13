@@ -13,17 +13,42 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 	          console.log('stateparams >> ', $scope.error, $stateParams.error);
 	          if ($stateParams.error) { $scope.error = $stateParams.error; }
 	          $scope.uid = utils.guid(16);
+	          var conditions = ['c1', 'c2'];
+	          $scope.condition = utils.chooseRandom(conditions);
 	        }
 	      }).state('survey', {
 	      	url:'/survey',
-	      	templateUrl:'tmpl/survey.html',	      	
-	      }).state('survey.views', {
+	      	resolve: { 
+	      		survey: function(utils) { 
+		          var u = utils, d = u.deferred();
+		          d3.csv('survey.csv').get(function(err, rows) { 
+		          	if (err) { 
+		          		d.reject();		
+		          		console.error('could not load ', e);
+		          		return;
+		          	}
+		          	d.resolve(rows);
+		          });
+		          return d.promise();
+		        }
+	      	},	      	
+	      	templateUrl:'tmpl/survey.html',
+	      	controller:function($scope, survey) { 
+	      		console.log('survey controller >> survey:: ', survey);
+	      		$scope.survey = survey;
+	      	}     	
+	      }).state('survey.question', {
 	      	url:'/:userID/:condition/:qid',
 	      	views: {
-	      		instructions: {
+	      		sharingbox: {
 	      			templateUrl:function($state) { 
 	      				console.log("$state >> ", $state, '->', 'tmpl/'+$state.condition+'.html');
 	      				return 'tmpl/'+$state.condition+'.html';
+	      			},
+	      			controller:function($scope, $stateParams) { 
+	      				var hits = $scope.survey.filter(function(x) { return x['qid'] === $stateParams.qid; });
+	      				$scope.q = hits && hits[0];
+	      				console.log('question > ', $scope.q, $scope.survey);
 	      			}
 	      		},
 	      		question: {
