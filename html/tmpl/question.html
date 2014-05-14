@@ -1,22 +1,27 @@
 <div class="question">
 	<div class="question-text" ng-bind="q.question"></div>
 	<div ng-switch="q.type" ng-show="q.type !== 'none'">
-		<div ng-switch-when="multiple">
-			<input ng-repeat="o in q.options.split(',')" type="radio" name="{{q.qid}}" value="{{o}}" ng-bind-unsafe="{{o}}"></input>
+		<div class="multiple" ng-switch-when="multiple">
+			<span ng-repeat="o in q.options.split(',')">
+				<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="{{o}}">{{o}}</input>
+			</span>
 		</div>
-		<textarea ng-switch-when="paragraph"></textarea>
-		<div ng-switch-when="boolean">
-			<input ng-repeat="o in question.options.split(',')" type="radio" name="{{q.qid}}" value="{{o}}"></input>
+		<textarea ng-switch-when="paragraph" ng-model="q.answer"></textarea>
+		<div class="boolean" ng-switch-when="boolean">
+			<span ng-repeat="o in q.options.split(',')">
+				<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="{{o}}">{{o}}</input>
+			</span>
 		</div>		
-		<div ng-switch-when="likert(5)">
+		<div class="likert" ng-switch-when="likert(5)">
 			<label ng-bind="q.options.split(',')[0]"></label>
-			<input type="radio" name="{{q.qid}}" value="1">1</input>
-			<input type="radio" name="{{q.qid}}" value="2">2</input>
-			<input type="radio" name="{{q.qid}}" value="3">3</input>
-			<input type="radio" name="{{q.qid}}" value="4">4</input>
-			<input type="radio" name="{{q.qid}}" value="5">5</input>
+			<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="1">1</input>
+			<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="2">2</input>
+			<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="3">3</input>
+			<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="4">4</input>
+			<input ng-model="q.answer" type="radio" name="{{q.qid}}" value="5">5</input>
 			<label ng-bind="q.options.split(',')[1]"></label>
 		</div>
 	</div>
-	<div class="btn btn-default" ng-click="next()">Next &gt;</div>
+	<button class="btn btn-default" ng-show="q.qid > 0" ng-click="prev()">&lt; go back</button>
+	<button class="btn btn-primary" ng-disabled="!q.answer" ng-click="next()">Next &gt;</button>
 </div>

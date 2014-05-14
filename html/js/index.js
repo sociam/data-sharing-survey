@@ -60,18 +60,27 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 		   				$scope.q = hits && hits[0];
 			      		console.log('survey controller >> question :: ', $scope.q);
 		   				$scope.next = function() {
+		   					// todo : save progress
 							var nlogical = parseInt($stateParams.qid) + 1;
 							if (survey[nlogical]) {
-								var params = { 
+								$state.go('survey.question', { 
 									userID: $stateParams.userID,
 									qid:nlogical,
 									condition:$stateParams.condition
-								};
-								console.log('next state .. ' + params);
-								$state.go('survey.question', params);
+								});
 							} else {
 								$state.go('done');
 							}
+		   				};
+		   				$scope.prev = function() { 
+							var nlogical = Math.max(0,parseInt($stateParams.qid) - 1);
+							if (survey[nlogical]) {
+								$state.go('survey.question', { 
+									userID: $stateParams.userID,
+									qid:nlogical,
+									condition:$stateParams.condition
+								});
+							}		   					
 		   				};
 			      	}
 	      		}
