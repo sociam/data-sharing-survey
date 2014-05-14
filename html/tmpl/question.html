@@ -1,5 +1,5 @@
 <div class="question">
-	<div class="question-text" ng-bind="q.question"></div>
+	<div class="question-text" ng-bind-html="sce.trustAsHtml(q.question)"></div>
 	<div ng-switch="q.type" ng-show="q.type !== 'none'">
 		<div class="multiple" ng-switch-when="multiple">
 			<span ng-repeat="o in q.options.split(',')">

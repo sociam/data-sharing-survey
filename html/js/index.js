@@ -53,8 +53,9 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 	      		},
 	      		question: {
 			      	templateUrl:'tmpl/question.html',
-			      	controller:function($scope, $stateParams, $state) {
+			      	controller:function($scope, $stateParams, $state, $sce) {
 			      		var survey = $scope.survey;
+			      		$scope.sce = $sce;
 			      		$scope.qid = $stateParams.qid;
 		   				var hits = $scope.survey.filter(function(x) { return x.qid === $stateParams.qid; });
 		   				$scope.q = hits && hits[0];
