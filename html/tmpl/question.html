@@ -22,6 +22,8 @@
 			<label ng-bind="q.options.split(',')[1]"></label>
 		</div>
 	</div>
-	<button class="btn btn-default" ng-show="q.qid > 0" ng-click="prev()">&lt; go back</button>
-	<button class="btn btn-primary" ng-disabled="!q.answer" ng-click="next()">Next &gt;</button>
+	<div class="nextprev">
+		<button class="btn btn-default" ng-show="q.qid > 0" ng-click="prev()">&lt; go back</button>
+		<button class="btn btn-primary" ng-disabled="!q.answer" ng-click="next()">Next &gt;</button>
+	</div>
 </div>
