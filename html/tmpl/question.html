@@ -1,3 +1,22 @@
 <div class="question">
-  <h2> question <span ng-bind="qid"></span></h2>
+	<div class="question-text" ng-bind="q.question"></div>
+	<div ng-switch="q.type" ng-show="q.type !== 'none'">
+		<div ng-switch-when="multiple">
+			<input ng-repeat="o in q.options.split(',')" type="radio" name="{{q.qid}}" value="{{o}}" ng-bind-unsafe="{{o}}"></input>
+		</div>
+		<textarea ng-switch-when="paragraph"></textarea>
+		<div ng-switch-when="boolean">
+			<input ng-repeat="o in question.options.split(',')" type="radio" name="{{q.qid}}" value="{{o}}"></input>
+		</div>		
+		<div ng-switch-when="likert(5)">
+			<label ng-bind="q.options.split(',')[0]"></label>
+			<input type="radio" name="{{q.qid}}" value="1">1</input>
+			<input type="radio" name="{{q.qid}}" value="2">2</input>
+			<input type="radio" name="{{q.qid}}" value="3">3</input>
+			<input type="radio" name="{{q.qid}}" value="4">4</input>
+			<input type="radio" name="{{q.qid}}" value="5">5</input>
+			<label ng-bind="q.options.split(',')[1]"></label>
+		</div>
+	</div>
+	<div class="btn btn-default" ng-click="next()">Next &gt;</div>
 </div>
