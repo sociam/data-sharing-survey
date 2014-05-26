@@ -15,6 +15,8 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 	          $scope.uid = utils.guid(16);
 	          var conditions = ['c1', 'c2'];
 	          $scope.condition = utils.chooseRandom(conditions);
+	          var profileids = ['d0','d1','d2','d3','d4','d5'];
+	          $scope.profileid = utils.chooseRandom(profileids);
 	        }
 	      }).state('survey', {
 	      	url:'/survey',
@@ -30,25 +32,43 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 		          	d.resolve(rows);
 		          });
 		          return d.promise();
+		        },
+		        profiles:function(utils) {
+		          var u = utils, d = u.deferred();
+		          d3.csv('profiles.csv').get(function(err, rows) { 
+		          	if (err) { 
+		          		d.reject();		
+		          		console.error('could not load profiles ', err);
+		          		return;
+		          	}
+		          	console.log('profiles >> ', rows);
+		          	d.resolve(rows);
+		          });
+		          return d.promise();		        	
 		        }
 	      	},
 	      	templateUrl:'tmpl/survey.html',
-	      	controller:function($scope, $state, $stateParams, survey) { 
+	      	controller:function($scope, $state, $stateParams, survey, profiles) { 
 	      		console.log('stateParams >> ', $stateParams);
 	      		$scope.survey = survey;
+	      		$scope.profiles = profiles;
 	      	}     	
 	      }).state('survey.question', {
-	      	url:'/:userID/:condition/:qid',
+	      	url:'/:userID/:condition/:profileID/:qid',
 	      	views: {
 	      		sharingbox: {
 	      			templateUrl:function($state) { 
 	      				return 'tmpl/'+$state.condition+'.html';
 	      			},
-	      			controller:function($scope, $stateParams) { 
-	      				console.log('question > ', $scope.survey);
+	      			controller:function($scope, $state, $stateParams) { 
+	      				console.log('question > ', $scope.survey, $scope.profileid);
 			      		$scope.qid = $stateParams.qid;
 		   				var hits = $scope.survey.filter(function(x) { return x.qid === $stateParams.qid; });
 		   				$scope.q = hits && hits[0];
+	      				$scope.profile = $scope.profiles.filter(function(x) { 
+	      					return x.id == $stateParams.profileID; 
+	      				})[0];
+	      				window.$ss = $scope; 
 		   			}
 	      		},
 	      		question: {
@@ -79,17 +99,13 @@ var app = angular.module('sharing', ['indx', 'ui.router'])
 								$state.go('survey.question', { 
 									userID: $stateParams.userID,
 									qid:nlogical,
+									profileID: $stateParams.profileID,
 									condition:$stateParams.condition
 								});
 							}		   					
 		   				};
 			      	}
 	      		}
-	      	},
-	      	controller:function($scope, $state) {
-	      		console.log('stateParams >> ', $state);
-	      		$scope.userid = $state.userID;
-	      		$scope.condition = $state.condition;	      		
 	      	}
 	      }).state('done', { url:'/done',  
 	      	templateUrl:'tmpl/done.html',
