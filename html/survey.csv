@@ -1,0 +1,18 @@
+qid,show,section,question,type,options
+0,TRUE,demo,your age range,multiple,"18-24,25-35,36-50,51-70,71+"
+1,TRUE,demo,your gender,multiple,"male, female, other"
+2,TRUE,demo,have you been to the hospital in the past 6 weeks?,boolean,"yes, no"
+3,TRUE,demo,have you been to the hospital in the past 6 months?,boolean,"yes, no"
+4,TRUE,demo,have you seen your GP in the past 6 weeks?,boolean,"yes, no"
+5,TRUE,demo,have you seen your GP in the past 6 months?,boolean,"yes, no"
+6,TRUE,demo,"do you suffer from a chronic medical condition ? (e.g., diabetes, cancer, HIV, heart disease, asthma)",boolean,"yes, no"
+7,TRUE,demo,"how often do you use facebook, twitter, instagram, snapchat or other social media, if ever?",likert(5),"several times a day, never"
+8,TRUE,demo,do you use a smartphone?,boolean,"yes, no"
+9,(answser(9) == 'yes'),demo,"do you use any fitness tracking smartphone apps (RunKeeper, Withings, Nike+, Moves)",boolean,"yes, no"
+10,TRUE,demo,"do you use any fitness tracking sensors (Fitbit, Nike Fuelband, XXX, YYY)",boolean,"yes, no"
+11,TRUE,trial,Would you be willing to grant the researchers access to your GP and Hospital electronic medical records ?,likert(5),"unwilling, very willing"
+12,(answer(12) == 'no'),trial,Please explain why you would not give them access.,paragraph,
+13,(answer(12) == 'yes'),trial,Would you be wiling to give these researchers permission to access to your GP and Hospital electronic medical records for future research projects ?,likert(5),"unwilling, very willing"
+14,(answer(12) == 'yes'),trial,Would you want them to ask you for permission for each research project? ,boolean,"yes, no"
+15,(answer(12) == 'yes' && answer(9) == 'yes'),,Would you be willing to donate the data collected on your smartphone about where you've been every day to these researchers?,likert(5),"unwilling, very willing"
+16,(answer(12) == 'yes' && answer(11) == 'yes'),,Would you be willing to donate the fitness activity data you've collected to these researchers?,likert(5),"unwilling, very willing"
